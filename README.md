@@ -5,7 +5,7 @@ Lumy is a [minimal](https://en.wikipedia.org/wiki/Minimalism_(computing)) micro 
 
 Lumy is born with the fact that micro-frameworks, like [Silex](http://silex.sensiolabs.org/) or [Slim](http://slimframework.com/), are still too big and handle behaviors that can be managed by many existing libraries. They're often too web-oriented too : PHP is also great with CLI environment.
 
-It is shipped with a CLI/HTP router, environment objects and a middleware stack.
+It is shipped with a CLI/HTTP router, environment objects and a middleware stack.
 
 Install
 -------
@@ -74,7 +74,7 @@ $lumy=Lumy\Http::getInstance();
 
 ### Adding basic routes
 
-The basic way to add a route in a CLI context is :
+The basic way to add a route in a CLI environment is :
 
 ```php
 $lumy->route('--help',function(){
@@ -123,7 +123,7 @@ $lumy->route('show {arg}',function($arg){
 ));
 ```
 
-### Adding routes in HTTP context
+### Adding routes with HTTP environment
 
 HTTP routes work the same as in CLI context but the `route()` method has been replaced in favor of `get()`, `post()`, `put()` and `delete()`. Here's some examples to clarify the situation :
 
@@ -311,8 +311,8 @@ The HTTP response object can manage headers, status code and provide some useful
 - `send($path)` : force the browser to send a download
 - `display($path)` : force the browser to display a file (generally an image)
 
-The Routes
-----------
+Dealing with routes
+-------------------
 
 The routing mechanism is used internally and we generally don't have to bother about it, otherwise there's some cases where we want to deal with routes directly. For that, we should name our routes by passing a name as the last argument of `route()`, `get()`, `post()`, etc :
 
@@ -327,7 +327,7 @@ Then you can get the route with `$lumy['router']['gallery']` and access to the f
 
 - `match($chain)` : match the specified chain against the route chain
 - `getChain()` : return the route chain
-- `getMatcher()` : return the matcher object used to verify if the route chain is valid against the current request (for more informations, see the (LongueVue)[https://github.com/pyrsmk/LongueVue] project)
+- `getMatcher()` : return the matcher object used to verify if the route chain is valid against the current request (for more informations, see the [LongueVue](https://github.com/pyrsmk/LongueVue) project)
 - `getController()` : return the registered controller with this route
 
 License
