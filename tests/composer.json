@@ -1,0 +1,6 @@
+{
+	"require": {
+		"pyrsmk/minisuite": "2.0.*",
+		"symfony/finder": "2.7.*@dev"
+	}
+}

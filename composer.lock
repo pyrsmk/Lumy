@@ -1,0 +1,106 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "6890b7798945e425fcd65be1d27ae747",
+    "packages": [
+        {
+            "name": "pyrsmk/chernozem",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pyrsmk/Chernozem.git",
+                "reference": "aa63b05088e42160b8caef83e4f543b2188729ab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pyrsmk/Chernozem/zipball/aa63b05088e42160b8caef83e4f543b2188729ab",
+                "reference": "aa63b05088e42160b8caef83e4f543b2188729ab",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aurélien Delogu",
+                    "email": "dev@dreamysource.fr",
+                    "homepage": "http://dreamysource.fr"
+                }
+            ],
+            "description": "An advanced dependency injection container",
+            "keywords": [
+                "container",
+                "dependency",
+                "injection"
+            ],
+            "time": "2014-10-23 19:22:11"
+        },
+        {
+            "name": "pyrsmk/longuevue",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pyrsmk/LongueVue.git",
+                "reference": "0c22c64e21dc7af2f33809be09f60bcf344a73ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pyrsmk/LongueVue/zipball/0c22c64e21dc7af2f33809be09f60bcf344a73ee",
+                "reference": "0c22c64e21dc7af2f33809be09f60bcf344a73ee",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aurélien Delogu",
+                    "email": "dev@dreamysource.fr",
+                    "homepage": "http://dreamysource.fr"
+                }
+            ],
+            "description": "A simple contents extractor",
+            "keywords": [
+                "content",
+                "contents",
+                "data",
+                "extract",
+                "pattern"
+            ],
+            "time": "2015-01-27 16:20:51"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "platform": {
+        "php": ">=5.3.0",
+        "ext-fileinfo": "*"
+    },
+    "platform-dev": []
+}

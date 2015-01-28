@@ -1,0 +1,22 @@
+{
+	"name": "pyrsmk/lumy",
+	"description": "A minimal CLI/HTTP framework",
+	"keywords": ["cli","http","framework","micro"],
+	"license": "MIT",
+	"authors": [{
+		"name": "Aurélien Delogu",
+		"email": "dev@dreamysource.fr",
+		"homepage": "http://dreamysource.fr"
+	}],
+	"require": {
+		"php": ">=5.3.0",
+		"ext-fileinfo": "*",
+		"pyrsmk/chernozem": "3.*",
+		"pyrsmk/longuevue": "0.*"
+	},
+	"autoload": {
+		"psr-0" : {
+			"" : "src/"
+		}
+	}
+}
