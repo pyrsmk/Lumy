@@ -72,7 +72,7 @@ The Lumy object is a singleton and can be retrieved/instantiated with :
 $lumy=Lumy\Http::getInstance();
 ```
 
-### Adding basic routes
+### Adding CLI routes
 
 The basic way to add a route in a CLI environment is :
 
@@ -242,7 +242,7 @@ $lumy->run();
 The request object
 ------------------
 
-All request objects have a `getChain()` method that returns the whole request/command chain for the request.
+All request objects have a `getChain()` method that returns the whole request/command chain for the request. You can retrieve this object with `$lumy['request']`.
 
 ### CLI
 
@@ -270,7 +270,9 @@ The HTTP request object implements several useful functions to deal with HTTP re
 The response object
 -------------------
 
-Response objects implement 4 methods for managing the response body. It also implements a `__toString()` function to print directly the response object returned by Lumy when the application has runned :
+Response objects implement 4 methods for managing the response body. You can retrieve this object with `$lumy['response']`.
+
+It also implements a `__toString()` function to print directly the response object returned by Lumy when the application has runned :
 
 ```
 echo $lumy->run();
@@ -311,8 +313,8 @@ The HTTP response object can manage headers, status code and provide some useful
 - `send($path)` : force the browser to send a download
 - `display($path)` : force the browser to display a file (generally an image)
 
-Dealing with routes
--------------------
+Advanced use of routes
+----------------------
 
 The routing mechanism is used internally and we generally don't have to bother about it, otherwise there's some cases where we want to deal with routes directly. For that, we should name our routes by passing a name as the last argument of `route()`, `get()`, `post()`, etc :
 
