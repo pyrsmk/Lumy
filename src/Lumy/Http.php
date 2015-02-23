@@ -34,7 +34,7 @@ class Http extends Lumy{
 		parent::__construct();
 		// Add a method override middleware (for REST)
 		$this->_middlewares[]=function($middlewares){
-			if($_POST['_METHOD']){
+			if(isset($_POST['_METHOD'])){
 				$_SERVER['REQUEST_METHOD']=strtoupper($_POST['_METHOD']);
 				unset($_POST['_METHOD']);
 			}
