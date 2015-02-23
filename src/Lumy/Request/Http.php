@@ -61,7 +61,7 @@ class Http extends AbstractRequest{
 			string
 	*/
 	public function getScheme(){
-		if(!$this->scheme){
+		if($this->scheme===null){
 			if($this->isSecure()){
 				$this->scheme=self::HTTPS_SCHEME;
 			}
@@ -79,11 +79,13 @@ class Http extends AbstractRequest{
 			string
 	*/
 	public function getHost(){
-		if(!$this->host){
+		if($this->host===null){
 			// HTTP_HOST test
-			$this->host=$_SERVER['HTTP_HOST'];
+			if(isset($_SERVER['HTTP_HOST'])){
+				$this->host=$_SERVER['HTTP_HOST'];
+			}
 			// SERVER_NAME test
-			if(!$this->host){
+			if(!$this->host && isset($_SERVER['SERVER_NAME'])){
 				$this->host=$_SERVER['SERVER_NAME'];
 			}
 		}
@@ -97,8 +99,8 @@ class Http extends AbstractRequest{
 			integer
 	*/
 	public function getPort(){
-		if(!$this->port){
-			$this->port=(int)$_SERVER['SERVER_PORT'];
+		if($this->port===null){
+			$this->port=isset($_SERVER['SERVER_PORT'])?(int)$_SERVER['SERVER_PORT']:80;
 		}
 		return $this->port;
 	}
@@ -110,17 +112,17 @@ class Http extends AbstractRequest{
 			string
 	*/
 	public function getRequestUri(){
-		if(!$this->request_uri){
+		if($this->request_uri===null){
 			// Verify IIS first
-			if($_SERVER['HTTP_X_REWRITE_URL']){
+			if(isset($_SERVER['HTTP_X_REWRITE_URL'])){
 				$this->request_uri=$_SERVER['HTTP_X_REWRITE_URL'];
 			}
 			// IIS 7 + rewriting: just valid with non encoded URLs because of a double slash issue
-			elseif($_SERVER['IIS_WasUrlRewritten']=='1' && $_SERVER['UNENCODED_URL']){
+			elseif(isset($_SERVER['IIS_WasUrlRewritten']) && $_SERVER['IIS_WasUrlRewritten']=='1' && isset($_SERVER['UNENCODED_URL'])){
 				$this->request_uri=$_SERVER['UNENCODED_URL'];
 			}
 			// REQUEST_URI
-			elseif($_SERVER['REQUEST_URI']){
+			elseif(isset($_SERVER['REQUEST_URI'])){
 				$this->request_uri=$_SERVER['REQUEST_URI'];
 				// Remove hostname
 				$full_host=$this->getScheme().'://'.$this->getHost();
@@ -129,7 +131,7 @@ class Http extends AbstractRequest{
 				}
 			}
 			// IIS 5.0, PHP CGI
-			elseif($_SERVER['ORIG_PATH_INFO']){
+			elseif(isset($_SERVER['ORIG_PATH_INFO'])){
 				$this->request_uri=$_SERVER['ORIG_PATH_INFO'];
 			}
 			// Clean up
@@ -147,7 +149,7 @@ class Http extends AbstractRequest{
 			string
 	*/
 	public function getRootUri(){
-		if($this->root_uri===null){
+		if($this->root_uri===null && isset($_SERVER['PHP_SELF'])){
 			preg_match('/^(.+?)\/[^\/]+$/',$_SERVER['PHP_SELF'],$match);
 			$this->root_uri=isset($match[1])?$match[1]:'';
 		}
@@ -161,7 +163,7 @@ class Http extends AbstractRequest{
 			string
 	*/
 	public function getResourceUri(){
-		if(!$this->resource_uri){
+		if($this->resource_uri===null){
 			$this->resource_uri=substr($this->getRequestUri(),strlen($this->getRootUri()));
 		}
 		return $this->resource_uri;
@@ -174,7 +176,7 @@ class Http extends AbstractRequest{
 			string
 	*/
 	public function getMethod(){
-		if(!$this->method){
+		if($this->method===null && isset($_SERVER['REQUEST_METHOD'])){
 			$this->method=$_SERVER['REQUEST_METHOD'];
 		}
 		return $this->method;
@@ -188,7 +190,7 @@ class Http extends AbstractRequest{
 	*/
 	public function getHeader($name){
 		$name=str_replace('-','_',strtoupper($name));
-		$header=$_SERVER[$name];
+		$header=isset($_SERVER[$name])?$_SERVER[$name]:null;
 		if(!$header){
 			$header=$_SERVER['HTTP_'.$name];
 		}
@@ -203,7 +205,7 @@ class Http extends AbstractRequest{
 	*/
 	public function isAjax(){
 		if($this->ajax===null){
-			$this->ajax=($_SERVER['HTTP_X_REQUESTED_WITH']=='XMLHttpRequest');
+			$this->ajax=(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']=='XMLHttpRequest');
 		}
 		return $this->ajax;
 	}
@@ -216,7 +218,7 @@ class Http extends AbstractRequest{
 	*/
 	public function isFlash(){
 		if($this->flash===null){
-			$this->flash=($_SERVER['CONTENT_TYPE']=='application/x-amf');
+			$this->flash=(isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE']=='application/x-amf');
 		}
 		return $this->flash;
 	}
@@ -228,7 +230,7 @@ class Http extends AbstractRequest{
 			boolean
 	*/
 	public function isSecure(){
-		if($this->secure===null){
+		if($this->secure===null && isset($_SERVER['HTTPS'])){
 			$this->secure=$_SERVER['HTTPS']=='on';
 		}
 		return $this->secure;
@@ -243,14 +245,14 @@ class Http extends AbstractRequest{
 	public function getClientIp(){
 		if(!$this->ip){
 			// Proxy test
-			if($_SERVER['HTTP_CLIENT_IP']){
+			if(isset($_SERVER['HTTP_CLIENT_IP'])){
 				$this->ip=$_SERVER['HTTP_CLIENT_IP'];
 			}
-			elseif($_SERVER['HTTP_X_FORWARDED_FOR']){
+			elseif(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
 				$this->ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
 			}
 			// Direct retrieving
-			else{
+			else if(isset($_SERVER['REMOTE_ADDR'])){
 				$this->ip=$_SERVER['REMOTE_ADDR'];
 			}
 		}

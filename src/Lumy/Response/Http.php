@@ -124,7 +124,7 @@ class Http extends AbstractResponse{
 	*/
 	public function setStatus($code){
 		$code=(int)$code;
-		$this->setHeader(($_SERVER['SERVER_PROTOCOL']?$_SERVER['SERVER_PROTOCOL']:'HTTP/1.0'),$code.' '.$this->messages[$code]);
+		$this->setHeader((isset($_SERVER['SERVER_PROTOCOL'])?$_SERVER['SERVER_PROTOCOL']:'HTTP/1.0'),$code.' '.$this->messages[$code]);
 		$this->setHeader('Status',$code.' '.$this->messages[$code]);
 		return $this;
 	}

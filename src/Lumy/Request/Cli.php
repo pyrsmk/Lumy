@@ -24,7 +24,7 @@ class Cli extends AbstractRequest{
 			string
 	*/
 	public function getApplicationName(){
-		$args=(array)$_SERVER['argv'];
+		$args=isset($_SERVER['argv'])?(array)$_SERVER['argv']:array();
 		return $args[0];
 	}
 
@@ -35,7 +35,7 @@ class Cli extends AbstractRequest{
 			array
 	*/
 	public function getArguments(){
-		$args=(array)$_SERVER['argv'];
+		$args=isset($_SERVER['argv'])?(array)$_SERVER['argv']:array();
 		array_shift($args);
 		return $args;
 	}
