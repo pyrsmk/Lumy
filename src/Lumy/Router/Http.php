@@ -16,6 +16,10 @@ class Http extends AbstractRouter{
 			Closure, false
 	*/
 	protected function _getController(){
+		// Sort routes
+		usort($this->__chernozem_values, function($a, $b) {
+			return strlen($a->getChain()) - strlen($b->getChain());
+		});
 		// Get request object
 		$lumy=Lumy\Http::getInstance();
 		$request=$lumy['request'];
@@ -40,7 +44,8 @@ class Http extends AbstractRouter{
 					$chain='//'.$request->getHost().$request->getRequestUri();
 				}
 				// By RequestURI
-				elseif($request->getRootUri() && strpos($route_chain,$request->getRootUri())===0){
+				// The first condition is here to decrease RequestURI priority against ResourceUri
+				elseif(strpos($request->getResourceUri(),$route_chain) === false && $request->getRootUri() && strpos($route_chain,$request->getRootUri())===0){
 					$chain=$request->getRequestUri();
 				}
 				// By ResourceURI
