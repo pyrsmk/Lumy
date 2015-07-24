@@ -151,7 +151,7 @@ class Http extends AbstractRequest{
 	public function getRootUri(){
 		if($this->root_uri===null && isset($_SERVER['PHP_SELF'])){
 			preg_match('/^(.+?)\/[^\/]+$/',$_SERVER['PHP_SELF'],$match);
-			$this->root_uri=isset($match[1])?$match[1]:'/';
+			$this->root_uri=isset($match[1])?$match[1]:'';
 		}
 		return $this->root_uri;
 	}
