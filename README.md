@@ -13,20 +13,10 @@ Install
 Pick up the source or install it with [Composer](https://getcomposer.org/) :
 
 ```json
-{
-    "require": {
-        "pyrsmk/lumy": "~2.8"
-    }
-}
+composer require pyrsmk/lumy
 ```
 
-If you're installing it with Composer, you just need to import that Composer's autoloader :
-
-```php
-require 'vendor/autoload.php';
-```
-
-If not, you'll need to set up an autoloader to load Lumy by yourself.
+If you're not installing it with Composer, don't forget to load its dependencies too : [Chernozem](https://github.com/pyrsmk/Chernozem), [LongueVue](https://github.com/pyrsmk/LongueVue).
 
 A quick example
 ---------------
