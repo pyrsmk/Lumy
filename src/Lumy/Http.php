@@ -56,8 +56,19 @@ class Http extends Lumy{
 				is_file($path) &&
 				$this->__lock->can($this->_formatPath($path))
 			) {
+				// Get mime type
+				$mime = mimetype($path);
+				// Try some more extensions
+				if($mime == 'text/plain') {
+					if(strpos($path, '.css')) $mime = 'text/css';
+					if(strpos($path, '.js')) $mime = 'application/javascript';
+					if(strpos($path, '.json')) $mime = 'application/json';
+				}
+				// Set content type
+				if($mime != 'text/plain') {
+					header('Content-Type: '.$mime);
+				}
 				// Print file
-				header('Content-Type: '.mimetype($path));
 				echo file_get_contents($path);
 				exit;
 			}
