@@ -13,7 +13,7 @@ class Http extends AbstractResponse{
 	/*
 		array $messages : HTTP response messages
 	*/
-	protected $messages=array(
+	protected $messages = array(
 		// Informational 1xx
 		100 => 'Continue',
 		101 => 'Switching Protocols',
@@ -70,16 +70,26 @@ class Http extends AbstractResponse{
 			string $name
 			string $value
 	*/
-	public function setHeader($name,$value){
-		if(headers_sent()){
+	public function setHeader($name, $value) {
+		if(headers_sent()) {
 			throw new Exception("The HTTP headers have already been sent, you cannot set a new header");
 		}
-		if(strpos($name,'HTTP')===0){
+		if(strpos($name, 'HTTP') === 0) {
 			header($name.' '.$value);
 		}
-		else{
+		else {
 			header($name.': '.$value);
 		}
+	}
+
+	/*
+		Unset a header
+
+		Parameters
+			string $name
+	*/
+	public function unsetHeader($name) {
+		header_remove($name);
 	}
 
 	/*
@@ -91,24 +101,14 @@ class Http extends AbstractResponse{
 		Return
 			string, false
 	*/
-	public function getHeader($name){
-		foreach(headers_list() as $header){
-			if(strpos($header,$name)===0){
-				preg_match('/: (.+)$/',$header,$match);
+	public function getHeader($name) {
+		foreach(headers_list() as $header) {
+			if(strpos($header,$name) === 0) {
+				preg_match('/: (.+)$/', $header, $match);
 				return $match[1];
 			}
 		}
 		return false;
-	}
-
-	/*
-		Unset a header
-
-		Parameters
-			string $name
-	*/
-	public function unsetHeader($name){
-		header_remove($name);
 	}
 
 	/*
@@ -122,10 +122,14 @@ class Http extends AbstractResponse{
 			Lumy\Environment\Http
 
 	*/
-	public function setStatus($code){
-		$code=(int)$code;
-		$this->setHeader((isset($_SERVER['SERVER_PROTOCOL'])?$_SERVER['SERVER_PROTOCOL']:'HTTP/1.0'),$code.' '.$this->messages[$code]);
-		$this->setHeader('Status',$code.' '.$this->messages[$code]);
+	public function setStatus($code) {
+		$code = (int)$code;
+		$message = '';
+		if(isset($this->messages[$code])) {
+			$message = $this->messages[$code];
+		}
+		$this->setHeader((isset($_SERVER['SERVER_PROTOCOL'])?$_SERVER['SERVER_PROTOCOL']:'HTTP/1.0'), $code.' '.$message);
+		$this->setHeader('Status', $code.' '.$message);
 		return $this;
 	}
 	
@@ -135,9 +139,9 @@ class Http extends AbstractResponse{
 		Return
 			integer
 	*/
-	public function getStatus(){
-		if($status=$this->getHeader('Status')){
-			preg_match('/^\d{3}/',$status,$match);
+	public function getStatus() {
+		if($status = $this->getHeader('Status')) {
+			preg_match('/^\d{3}/', $status, $match);
 			return (int)$match[0];
 		}
 		else{
@@ -152,13 +156,13 @@ class Http extends AbstractResponse{
 			string $url     : the URL
 			integer $status : a HTTP status code
 	*/
-	public function redirect($url,$status=302){
+	public function redirect($url, $status=302) {
 		$this->setStatus($status);
-		if($url{0}=='/'){
-			$lumy=Lumy::getInstance();
-			$url=$lumy['request']->getRootUri().$url;
+		if($url{0} == '/'){
+			$lumy = Lumy::getInstance();
+			$url = $lumy['request']->getRootUri().$url;
 		}
-		$this->setHeader('Location',$url);
+		$this->setHeader('Location', $url);
 		exit;
 	}
 
@@ -171,8 +175,8 @@ class Http extends AbstractResponse{
 		Return
 			Lumy\Environment\Http
 	*/
-	public function send($path){
-		$this->_printToBrowser($path,'attachment');
+	public function send($path) {
+		$this->_printToBrowser($path, 'attachment');
 		return $this;
 	}
 
@@ -185,8 +189,8 @@ class Http extends AbstractResponse{
 		Return
 			Lumy\Environment\Http
 	*/
-	public function display($path){
-		$this->_printToBrowser($path,'inline');
+	public function display($path) {
+		$this->_printToBrowser($path, 'inline');
 		return $this;
 	}
 
@@ -197,21 +201,21 @@ class Http extends AbstractResponse{
 			string $path		: file to print
 			string $disposition	: file disposition (inline or attachment)
 	*/
-	protected function _printToBrowser($path,$disposition){
+	protected function _printToBrowser($path, $disposition) {
 		// Verify
-		if(!file_exists($path)){
+		if(!file_exists($path)) {
 			throw new Exception("'$path' file does not exist");
 		}
 		// Get file contents
-		$contents=file_get_contents($path);
+		$contents = file_get_contents($path);
 		// Guess mime type
-		$finfo=finfo_open(FILEINFO_MIME);
-		$mimetype=finfo_file($finfo,$path);
+		$finfo = finfo_open(FILEINFO_MIME);
+		$mimetype = finfo_file($finfo, $path);
 		finfo_close($finfo);
 		// Set headers
-		$this->setHeader('Content-Type',$mimetype);
-		$this->setHeader('Content-Length',strlen($contents));
-		$this->setHeader('Content-Disposition',$disposition.'; filename="'.basename($path).'"');
+		$this->setHeader('Content-Type', $mimetype);
+		$this->setHeader('Content-Length', strlen($contents));
+		$this->setHeader('Content-Disposition', $disposition.'; filename="'.basename($path).'"');
 		// Print contents
 		echo $contents;
 		exit;

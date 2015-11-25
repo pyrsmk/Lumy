@@ -7,7 +7,7 @@ use Lumy\Exception;
 /*
 	Abstract application base class
 */
-abstract class Lumy extends Chernozem{
+abstract class Lumy extends Chernozem {
 
 	/*
 		Lumy $instance								: application instance
@@ -29,16 +29,16 @@ abstract class Lumy extends Chernozem{
 	*/
 	public function __construct(){
 		// Init core objects
-		$this->_request=$this->_getRequest();
-		$this->_response=$this->_getResponse();
-		$this->_router=$this->_getRouter();
-		$this->_middlewares=new MiddlewareCollection;
+		$this->_request = $this->_getRequest();
+		$this->_response = $this->_getResponse();
+		$this->_router = $this->_getRouter();
+		$this->_middlewares = new MiddlewareCollection;
 		// Init error closure
-		$this->__error=function($exception){
+		$this->__error = function($exception) {
 			throw $exception;
 		};
 		// Save instance
-		self::$instance=$this;
+		self::$instance = $this;
 	}
 
 	/*
@@ -71,9 +71,9 @@ abstract class Lumy extends Chernozem{
 		Return
 			Lumy
 	*/
-	static public function getInstance(){
-		if(!self::$instance){
-			self::$instance=new self;
+	static public function getInstance() {
+		if(!self::$instance) {
+			self::$instance = new self;
 		}
 		return self::$instance;
 	}
@@ -91,15 +91,10 @@ abstract class Lumy extends Chernozem{
 		Return
 			Lumy
 	*/
-	public function route($chains,$controller,$formats=array(),$defaults=array(),$name=''){
-		$chains=(array)$chains;
-		foreach($chains as $chain){
-			if($name){
-				$this->_router[$name]=new Route($chain,$formats,$defaults,$controller);
-			}
-			else{
-				$this->_router[]=new Route($chain,$formats,$defaults,$controller);
-			}
+	public function route($chains, $controller, $formats=array(), $defaults=array(), $name=null) {
+		$chains = (array)$chains;
+		foreach($chains as $chain) {
+			$this->_router->addRoute($name, new Route($chain, $formats, $defaults, $controller));
 		}
 		return $this;
 	}
@@ -113,11 +108,11 @@ abstract class Lumy extends Chernozem{
 		Return
 			Lumy
 	*/
-	public function error($controller){
-		if(!is_callable($controller)){
+	public function error($controller) {
+		if(!is_callable($controller)) {
 			throw new Exception("The provided error controller is not callable");
 		}
-		$this->__error=$controller;
+		$this->__error = $controller;
 		return $this;
 	}
 
@@ -131,12 +126,12 @@ abstract class Lumy extends Chernozem{
 		Return
 			Lumy
 	*/
-	public function middleware($callback,$name=null){
-		if($name){
-			$this->_middlewares[(string)$name]=$callback;
+	public function middleware($callback, $name = null) {
+		if($name) {
+			$this->_middlewares[(string)$name] = $callback;
 		}
-		else{
-			$this->_middlewares[]=$callback;
+		else {
+			$this->_middlewares[] = $callback;
 		}
 		return $this;
 	}
@@ -147,11 +142,11 @@ abstract class Lumy extends Chernozem{
 		Return
 			Lumy\Response\AbstractResponse
 	*/
-	public function run(){
-		try{
+	public function run() {
+		try {
 			// Add the routing mechanism to the middleware stack
-			$router=$this->_router;
-			$this->_middlewares['routing']=function($middlewares) use($router){
+			$router = $this->_router;
+			$this->_middlewares['routing'] = function($middlewares) use($router) {
 				$router->route();
 				$middlewares->next();
 			};
@@ -161,11 +156,11 @@ abstract class Lumy extends Chernozem{
 			unset($this->_middlewares['routing']);
 		}
 		// Catch errors
-		catch(\Exception $e){
+		catch(\Exception $e) {
 			// Remove the routing mechanism
 			unset($this->_middlewares['routing']);
 			// Handle exception
-			$error=$this->__error;
+			$error = $this->__error;
 			$error($e);
 		}
 		return $this->_response;

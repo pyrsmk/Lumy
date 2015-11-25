@@ -5,12 +5,12 @@ namespace Lumy\Response;
 /*
 	Abstract response
 */
-abstract class AbstractResponse{
+abstract class AbstractResponse {
 
 	/*
 		string $body
 	*/
-	protected $body='';
+	protected $body = '';
 
 	/*
 		Set the response body
@@ -18,8 +18,8 @@ abstract class AbstractResponse{
 		Parameters
 			string $body
 	*/
-	public function setBody($body){
-		$this->body=(string)$body;
+	public function setBody($body) {
+		$this->body = (string)$body;
 	}
 
 	/*
@@ -28,8 +28,8 @@ abstract class AbstractResponse{
 		Parameters
 			string $body
 	*/
-	public function prependBody($body){
-		$this->body=((string)$body).$this->body;
+	public function prependBody($body) {
+		$this->body = ((string)$body).$this->body;
 	}
 
 	/*
@@ -38,8 +38,8 @@ abstract class AbstractResponse{
 		Parameters
 			string $body
 	*/
-	public function appendBody($body){
-		$this->body.=(string)$body;
+	public function appendBody($body) {
+		$this->body .= (string)$body;
 	}
 
 	/*
@@ -48,7 +48,7 @@ abstract class AbstractResponse{
 		Return
 			string
 	*/
-	public function getBody(){
+	public function getBody() {
 		return $this->body;
 	}
 
@@ -58,7 +58,7 @@ abstract class AbstractResponse{
 		Return
 			string
 	*/
-	public function __toString(){
+	public function __toString() {
 		return $this->getBody();
 	}
 

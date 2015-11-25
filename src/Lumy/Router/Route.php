@@ -7,7 +7,7 @@ use LongueVue;
 /*
 	A route
 */
-class Route{
+class Route {
 
 	/*
 		string $chain
@@ -27,32 +27,33 @@ class Route{
 			array $defaults         : default value list for route pattern variables
 			callable $controller    : a controller to call
 	*/
-	public function __construct($chain,$formats,$defaults,$controller){
+	public function __construct($chain, $formats, $defaults, $controller) {
 		// Normalize
-		$chain=(string)$chain;
-		$formats=(array)$formats;
-		$defaults=(array)$defaults;
+		$chain = (string)$chain;
+		$formats = (array)$formats;
+		$defaults = (array)$defaults;
 		// Prepare formats
 		preg_match_all('#\{(\w+)\}#S',$chain,$matches);
-		foreach($matches[1] as $match){
-			if(!($format=&$formats[$match])){
-				$format='\w+';
+		foreach($matches[1] as $match) {
+			$format = &$formats[$match];
+			if(!$format) {
+				$format = '\w+';
 			}
 		}
 		// Verify controller
-		if(!is_callable($controller)){
+		if(!is_callable($controller)) {
 			throw new Exception("The controller for the '$chain' route is not callable");
 		}
 		// Save data
-		$this->chain=$chain;
-		$this->matcher=new LongueVue($chain,$formats,$defaults);
-		foreach($formats as $slug=>$regex){
-			$this->matcher->addValidator($slug,$regex);
+		$this->chain = $chain;
+		$this->matcher = new LongueVue($chain,$formats,$defaults);
+		foreach($formats as $slug => $regex) {
+			$this->matcher->addValidator($slug, $regex);
 		}
-		foreach($defaults as $slug=>$regex){
-			$this->matcher->addDefaultValue($slug,$regex);
+		foreach($defaults as $slug => $regex) {
+			$this->matcher->addDefaultValue($slug, $regex);
 		}
-		$this->controller=$controller;
+		$this->controller = $controller;
 	}
 
 	/*
@@ -61,7 +62,7 @@ class Route{
 		Return
 			mixed
 	*/
-	public function match($chain){
+	public function match($chain) {
 		return $this->matcher->match($chain);
 	}
 
@@ -71,7 +72,7 @@ class Route{
 		Return
 			string
 	*/
-	public function getChain(){
+	public function getChain() {
 		return $this->chain;
 	}
 
@@ -81,7 +82,7 @@ class Route{
 		Return
 			LongueVue
 	*/
-	public function getMatcher(){
+	public function getMatcher() {
 		return $this->matcher;
 	}
 
@@ -91,7 +92,7 @@ class Route{
 		Return
 			callable
 	*/
-	public function getController(){
+	public function getController() {
 		return $this->controller;
 	}
 

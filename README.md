@@ -1,4 +1,4 @@
-Lumy 2.8.8
+Lumy 2.9.0
 ==========
 
 Lumy is a [minimal](https://en.wikipedia.org/wiki/Minimalism_(computing)) micro CLI/HTTP framework that aims to be quick, effective and simple to extend as you want with any external component. It is heavily based on [Chernozem](https://github.com/pyrsmk/Chernozem) to provide an efficient way for dependencies injection.
@@ -248,7 +248,7 @@ The HTTP request object implements several useful functions to deal with HTTP re
 - `getScheme()` : get the scheme of the request, either `http` or `https`
 - `getHost()` : get the host (example : `mywebsite.com`)
 - `getPort()` : get the port for the request (example : `80`)
-- `getRequestUri()` : get the request URI (the request chain relative to the current host) (example : `mywebsite.com`)
+- `getRequestUri()` : get the request URI (the request chain relative to the current host) (example : `/app/gallery/7`)
 - `getRootUri()` : get the root URI (it's the path relative to your application/website for the request) (example : `/app`)
 - `getResourceUri()` : get the resource URI (it's the path relative to the specific request for your application/website) (example : `/gallery/7`)
 - `getMethod()` : get the method for the request (generally `GET`, `POST`, `PUT` or `DELETE`)
@@ -302,6 +302,21 @@ The HTTP response object can manage headers, status code and provide some useful
 - `redirect($url,$status)` : redirect to the specified absolute/relative URL; the status code sent by default is `302`
 - `send($path)` : force the browser to send a download
 - `display($path)` : force the browser to display a file (generally an image)
+
+Public directories
+------------------
+
+Since we often encounter several different servers in one project (at least, your local and remote ones), Lumy has like a firewall option that allow or forbid access to your files if needed. Point all requests in your `.htaccess` (or whatsoever) to your application file (`index.php`) : now all requets are passing through Lumy. We just need to allow/deny what we need.
+
+```php
+// The user will freely access to the files in images/, uploads/ and config/
+$lumy->publish('/images');
+$lumy->publish('/uploads');
+$lumy->publish('/config');
+
+// But he won't access to sensible data
+$lumy->unpublish('/config/database.json');
+```
 
 Advanced use of routes
 ----------------------

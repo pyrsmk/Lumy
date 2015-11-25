@@ -7,7 +7,7 @@ use Lumy\Exception;
 /*
 	HTTP request object
 */
-class Http extends AbstractRequest{
+class Http extends AbstractRequest {
 
 	/*
 		string HTTP_SCHEME  : HTTP protocol
@@ -47,7 +47,7 @@ class Http extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getChain(){
+	public function getChain() {
 		return $this->getScheme().'://'.
 			   $this->getHost().
 			   $this->getRootUri().
@@ -60,13 +60,13 @@ class Http extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getScheme(){
-		if($this->scheme===null){
-			if($this->isSecure()){
-				$this->scheme=self::HTTPS_SCHEME;
+	public function getScheme() {
+		if($this->scheme === null) {
+			if($this->isSecure()) {
+				$this->scheme = self::HTTPS_SCHEME;
 			}
-			else{
-				$this->scheme=self::HTTP_SCHEME;
+			else {
+				$this->scheme = self::HTTP_SCHEME;
 			}
 		}
 		return $this->scheme;
@@ -78,15 +78,15 @@ class Http extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getHost(){
-		if($this->host===null){
+	public function getHost() {
+		if($this->host === null) {
 			// HTTP_HOST test
-			if(isset($_SERVER['HTTP_HOST'])){
-				$this->host=$_SERVER['HTTP_HOST'];
+			if(isset($_SERVER['HTTP_HOST'])) {
+				$this->host = $_SERVER['HTTP_HOST'];
 			}
 			// SERVER_NAME test
-			if(!$this->host && isset($_SERVER['SERVER_NAME'])){
-				$this->host=$_SERVER['SERVER_NAME'];
+			if(!$this->host && isset($_SERVER['SERVER_NAME'])) {
+				$this->host = $_SERVER['SERVER_NAME'];
 			}
 		}
 		return $this->host;
@@ -98,9 +98,9 @@ class Http extends AbstractRequest{
 		Return
 			integer
 	*/
-	public function getPort(){
-		if($this->port===null){
-			$this->port=isset($_SERVER['SERVER_PORT'])?(int)$_SERVER['SERVER_PORT']:80;
+	public function getPort() {
+		if($this->port === null) {
+			$this->port = isset($_SERVER['SERVER_PORT']) ? (int)$_SERVER['SERVER_PORT'] : 80;
 		}
 		return $this->port;
 	}
@@ -111,32 +111,32 @@ class Http extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getRequestUri(){
-		if($this->request_uri===null){
+	public function getRequestUri() {
+		if($this->request_uri === null){
 			// Verify IIS first
-			if(isset($_SERVER['HTTP_X_REWRITE_URL'])){
-				$this->request_uri=$_SERVER['HTTP_X_REWRITE_URL'];
+			if(isset($_SERVER['HTTP_X_REWRITE_URL'])) {
+				$this->request_uri = $_SERVER['HTTP_X_REWRITE_URL'];
 			}
 			// IIS 7 + rewriting: just valid with non encoded URLs because of a double slash issue
-			elseif(isset($_SERVER['IIS_WasUrlRewritten']) && $_SERVER['IIS_WasUrlRewritten']=='1' && isset($_SERVER['UNENCODED_URL'])){
-				$this->request_uri=$_SERVER['UNENCODED_URL'];
+			elseif(isset($_SERVER['IIS_WasUrlRewritten']) && $_SERVER['IIS_WasUrlRewritten']=='1' && isset($_SERVER['UNENCODED_URL'])) {
+				$this->request_uri = $_SERVER['UNENCODED_URL'];
 			}
 			// REQUEST_URI
-			elseif(isset($_SERVER['REQUEST_URI'])){
-				$this->request_uri=$_SERVER['REQUEST_URI'];
+			elseif(isset($_SERVER['REQUEST_URI'])) {
+				$this->request_uri = $_SERVER['REQUEST_URI'];
 				// Remove hostname
-				$full_host=$this->getScheme().'://'.$this->getHost();
-				if(strpos($this->request_uri,$full_host)===0){
-					$this->request_uri=substr($this->request_uri,strlen($full_host));
+				$full_host = $this->getScheme().'://'.$this->getHost();
+				if(strpos($this->request_uri, $full_host) === 0) {
+					$this->request_uri = substr($this->request_uri, strlen($full_host));
 				}
 			}
 			// IIS 5.0, PHP CGI
-			elseif(isset($_SERVER['ORIG_PATH_INFO'])){
-				$this->request_uri=$_SERVER['ORIG_PATH_INFO'];
+			elseif(isset($_SERVER['ORIG_PATH_INFO'])) {
+				$this->request_uri = $_SERVER['ORIG_PATH_INFO'];
 			}
 			// Clean up
-			if($pos=strpos($this->request_uri,'?')){
-				$this->request_uri=substr($this->request_uri,0,$pos);
+			if($pos = strpos($this->request_uri, '?')) {
+				$this->request_uri = substr($this->request_uri, 0, $pos);
 			}
 		}
 		return $this->request_uri;
@@ -148,10 +148,10 @@ class Http extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getRootUri(){
-		if($this->root_uri===null && isset($_SERVER['PHP_SELF'])){
-			preg_match('/^(.+?)\/[^\/]+$/',$_SERVER['PHP_SELF'],$match);
-			$this->root_uri=isset($match[1])?$match[1]:'';
+	public function getRootUri() {
+		if($this->root_uri === null && isset($_SERVER['PHP_SELF'])) {
+			preg_match('/^(.+?)\/[^\/]+$/', $_SERVER['PHP_SELF'], $match);
+			$this->root_uri = isset($match[1]) ? $match[1] : '';
 		}
 		return $this->root_uri;
 	}
@@ -162,9 +162,9 @@ class Http extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getResourceUri(){
-		if($this->resource_uri===null){
-			$this->resource_uri=substr($this->getRequestUri(),strlen($this->getRootUri()));
+	public function getResourceUri() {
+		if($this->resource_uri === null) {
+			$this->resource_uri = substr($this->getRequestUri(), strlen($this->getRootUri()));
 		}
 		return $this->resource_uri;
 	}
@@ -175,9 +175,9 @@ class Http extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getMethod(){
-		if($this->method===null && isset($_SERVER['REQUEST_METHOD'])){
-			$this->method=$_SERVER['REQUEST_METHOD'];
+	public function getMethod() {
+		if($this->method === null && isset($_SERVER['REQUEST_METHOD'])) {
+			$this->method = $_SERVER['REQUEST_METHOD'];
 		}
 		return $this->method;
 	}
@@ -186,13 +186,19 @@ class Http extends AbstractRequest{
 		Get a request header
 
 		Return
-			string
+			string, null
 	*/
-	public function getHeader($name){
-		$name=str_replace('-','_',strtoupper($name));
-		$header=isset($_SERVER[$name])?$_SERVER[$name]:null;
-		if(!$header){
-			$header=$_SERVER['HTTP_'.$name];
+	public function getHeader($name) {
+		$name = str_replace('-', '_', strtoupper($name));
+		$header = isset($_SERVER[$name]) ? $_SERVER[$name] : null;
+		if($header === null) {
+			if(isset($_SERVER['HTTP_'.$name])) {
+				$header = $_SERVER['HTTP_'.$name];
+			}
+			if($header === null && function_exists('apache_request_headers')) {
+				$headers = apache_request_headers();
+				$header = isset($headers[$name]) ? $headers[$name] : null;
+			}
 		}
 		return $header;
 	}
@@ -203,9 +209,9 @@ class Http extends AbstractRequest{
 	Return
 			boolean
 	*/
-	public function isAjax(){
-		if($this->ajax===null){
-			$this->ajax=(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']=='XMLHttpRequest');
+	public function isAjax() {
+		if($this->ajax === null){
+			$this->ajax=  (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 		}
 		return $this->ajax;
 	}
@@ -216,9 +222,9 @@ class Http extends AbstractRequest{
 		Return
 			boolean
 	*/
-	public function isFlash(){
-		if($this->flash===null){
-			$this->flash=(isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE']=='application/x-amf');
+	public function isFlash() {
+		if($this->flash === null) {
+			$this->flash = (isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] == 'application/x-amf');
 		}
 		return $this->flash;
 	}
@@ -229,9 +235,9 @@ class Http extends AbstractRequest{
 		Return
 			boolean
 	*/
-	public function isSecure(){
-		if($this->secure===null && isset($_SERVER['HTTPS'])){
-			$this->secure=$_SERVER['HTTPS']=='on';
+	public function isSecure() {
+		if($this->secure === null && isset($_SERVER['HTTPS'])){
+			$this->secure = $_SERVER['HTTPS'] == 'on';
 		}
 		return $this->secure;
 	}
@@ -242,18 +248,18 @@ class Http extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getClientIp(){
-		if(!$this->ip){
+	public function getClientIp() {
+		if(!$this->ip) {
 			// Proxy test
-			if(isset($_SERVER['HTTP_CLIENT_IP'])){
-				$this->ip=$_SERVER['HTTP_CLIENT_IP'];
+			if(isset($_SERVER['HTTP_CLIENT_IP'])) {
+				$this->ip = $_SERVER['HTTP_CLIENT_IP'];
 			}
-			elseif(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
-				$this->ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+			elseif(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				$this->ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
 			}
 			// Direct retrieving
-			else if(isset($_SERVER['REMOTE_ADDR'])){
-				$this->ip=$_SERVER['REMOTE_ADDR'];
+			else if(isset($_SERVER['REMOTE_ADDR'])) {
+				$this->ip = $_SERVER['REMOTE_ADDR'];
 			}
 		}
 		return $this->ip;

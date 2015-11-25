@@ -7,7 +7,7 @@ use Lumy;
 /*
 	HTTP router
 */
-class Http extends AbstractRouter{
+class Http extends AbstractRouter {
 
 	/*
 		Return the controller corresponding to the request
@@ -15,56 +15,56 @@ class Http extends AbstractRouter{
 		Return
 			Closure, false
 	*/
-	protected function _getController(){
+	protected function _getController() {
 		// Sort routes
-		usort($this->__chernozem_values, function($a, $b) {
+		uasort($this->_routes, function($a, $b) {
 			return strlen($a->getChain()) - strlen($b->getChain());
 		});
 		// Get request object
-		$lumy=Lumy\Http::getInstance();
-		$request=$lumy['request'];
+		$lumy = Lumy\Http::getInstance();
+		$request = $lumy['request'];
 		// Get request method
-		$method=$request->getMethod();
+		$method = $request->getMethod();
 		// Search
-		$arguments=false;
-		foreach($this->__chernozem_values as $i=>$route){
+		$arguments = false;
+		foreach($this->_routes as $route) {
 			// Just match the request chain when its method is valid
-			if(strpos($route->getChain(),$method)!==0){
+			if(strpos($route->getChain(), $method) !== 0) {
 				continue;
 			}
 			// Get the HTTP request chain
 			else{
-				$route_chain=substr($route->getChain(),strpos($route->getChain(),'#')+1);
+				$route_chain = substr($route->getChain(), strpos($route->getChain(), '#') + 1);
 				// By Scheme/Host/RequestURI
-				if(strpos($route_chain,'http:')===0 || strpos($route_chain,'https:')===0){
-					$chain=$request->getChain();
+				if(strpos($route_chain,'http:') === 0 || strpos($route_chain,'https:') === 0) {
+					$chain = $request->getChain();
 				}
 				// By Host/RequestURI
-				elseif(strpos($route_chain,'//')===0){
-					$chain='//'.$request->getHost().$request->getRequestUri();
+				elseif(strpos($route_chain,'//') === 0) {
+					$chain = '//'.$request->getHost().$request->getRequestUri();
 				}
 				// By RequestURI
 				// The first condition is here to decrease RequestURI priority against ResourceUri
-				elseif(strpos($request->getResourceUri(),$route_chain) === false && $request->getRootUri() && strpos($route_chain,$request->getRootUri())===0){
-					$chain=$request->getRequestUri();
+				elseif(strpos($request->getResourceUri(),$route_chain) === false && $request->getRootUri() && strpos($route_chain, $request->getRootUri()) === 0) {
+					$chain = $request->getRequestUri();
 				}
 				// By ResourceURI
 				else{
-					$chain=$request->getResourceUri();
+					$chain = $request->getResourceUri();
 				}
 			}
 			// Is this the good route?
-			if(($arguments=$route->match($method.'#'.$chain))!==false){
+			if(($arguments = $route->match($method.'#'.$chain)) !== false) {
 				break;
 			}
 		}
 		// No controller found
-		if($arguments===false){
+		if($arguments === false) {
 			return false;
 		}
 		// Controller found
-		return function() use($route,$arguments){
-			return call_user_func_array($route->getController(),$arguments);
+		return function() use($route,$arguments) {
+			return call_user_func_array($route->getController(), $arguments);
 		};
 	}
 

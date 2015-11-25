@@ -1,7 +1,7 @@
 {
 	"name": "pyrsmk/lumy",
 	"description": "A minimal CLI/HTTP framework",
-	"keywords": ["cli","http","framework","micro"],
+	"keywords": ["cli", "http", "framework", "micro"],
 	"license": "MIT",
 	"authors": [{
 		"name": "Aurélien Delogu",
@@ -12,7 +12,9 @@
 		"php": ">=5.4.0",
 		"ext-fileinfo": "*",
 		"pyrsmk/chernozem": "3.*",
-		"pyrsmk/longuevue": "0.*"
+		"pyrsmk/longuevue": "0.*",
+		"pyrsmk/funktions": "^0.1.6",
+		"beatswitch/lock": "^0.2.0"
 	},
 	"autoload": {
 		"psr-0" : {

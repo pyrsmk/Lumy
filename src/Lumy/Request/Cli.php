@@ -5,7 +5,7 @@ namespace Lumy\Request;
 /*
 	CLI request object
 */
-class Cli extends AbstractRequest{
+class Cli extends AbstractRequest {
 
 	/*
 		Return the complete request chain
@@ -13,8 +13,8 @@ class Cli extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getChain(){
-		return implode(' ',$this->getArguments());
+	public function getChain() {
+		return implode(' ', $this->getArguments());
 	}
 
 	/*
@@ -23,8 +23,8 @@ class Cli extends AbstractRequest{
 		Return
 			string
 	*/
-	public function getApplicationName(){
-		$args=isset($_SERVER['argv'])?(array)$_SERVER['argv']:array();
+	public function getApplicationName() {
+		$args = isset($_SERVER['argv']) ? (array)$_SERVER['argv'] : array();
 		return $args[0];
 	}
 
@@ -34,8 +34,8 @@ class Cli extends AbstractRequest{
 		Return
 			array
 	*/
-	public function getArguments(){
-		$args=isset($_SERVER['argv'])?(array)$_SERVER['argv']:array();
+	public function getArguments() {
+		$args = isset($_SERVER['argv']) ? (array)$_SERVER['argv'] : array();
 		array_shift($args);
 		return $args;
 	}

@@ -8,7 +8,7 @@ use Lumy\Exception;
 /*
 	Collection of middlewares
 */
-class MiddlewareCollection extends Chernozem{
+class MiddlewareCollection extends Chernozem {
 
 	/*
 		Set a value
@@ -17,33 +17,33 @@ class MiddlewareCollection extends Chernozem{
 			mixed $key
 			mixed $callback
 	*/
-	public function offsetSet($key,$value){
-		if(!is_callable($value)){
-			if($key){
+	public function offsetSet($key, $value) {
+		if(!is_callable($value)) {
+			if($key) {
 				throw new Exception("'$key' middleware is not callable");
 			}
-			else{
+			else {
 				throw new Exception("Provided middleware is not callable");
 			}
 		}
-		parent::offsetSet($key,$value);
+		parent::offsetSet($key, $value);
 	}
 
 	/*
 		Run the middleware stack
 	*/
-	public function run(){
+	public function run() {
 		$this->rewind();
-		call_user_func($this->current(),$this);
+		call_user_func($this->current(), $this);
 	}
 
 	/*
 		Call the next middleware
 	*/
-	public function next(){
+	public function next() {
 		parent::next();
-		if($this->valid()){
-			return call_user_func($this->current(),$this);
+		if($this->valid()) {
+			return call_user_func($this->current(), $this);
 		}
 	}
 

@@ -10,7 +10,7 @@ use Lumy\Router\Cli as Router;
 /*
 	CLI application class
 */
-class Cli extends Lumy{
+class Cli extends Lumy {
 
 	/*
 		Return the request object
@@ -18,7 +18,7 @@ class Cli extends Lumy{
 		Return
 			Lumy\Request\Cli
 	*/
-	protected function _getRequest(){
+	protected function _getRequest() {
 		return new Request;
 	}
 
@@ -28,7 +28,7 @@ class Cli extends Lumy{
 		Return
 			Lumy\Response\Cli
 	*/
-	protected function _getResponse(){
+	protected function _getResponse() {
 		return new Response;
 	}
 
@@ -38,7 +38,7 @@ class Cli extends Lumy{
 		Return
 			Lumy\Router\Cli
 	*/
-	protected function _getRouter(){
+	protected function _getRouter() {
 		return new Router;
 	}
 
@@ -55,12 +55,12 @@ class Cli extends Lumy{
 		Return
 			Lumy
 	*/
-	public function route($chains,$controller,$formats=array(),$defaults=array(),$name=''){
-		$chains=(array)$chains;
-		foreach($chains as &$chain){
-			$chain=preg_replace('/\s+/',' ',$chain);
+	public function route($chains, $controller, $formats=array(), $defaults=array(), $name='') {
+		$chains = (array)$chains;
+		foreach($chains as &$chain) {
+			$chain=preg_replace('/\s+/', ' ', $chain);
 		}
-		return parent::route($chains,$controller,$formats,$defaults,$name);
+		return parent::route($chains, $controller, $formats, $defaults, $name);
 	}
 
 }

@@ -47,11 +47,11 @@ class Cli extends AbstractResponse{
 			string $name
 			string $value
 	*/
-	public function setVariable($name,$value){
-		if($value===null){
+	public function setVariable($name,$value) {
+		if($value === null) {
 			return putenv("$name=");
 		}
-		else{
+		else {
 			return putenv("$name=$value");
 		}
 	}
@@ -65,7 +65,7 @@ class Cli extends AbstractResponse{
 		Return
 			string, false
 	*/
-	public function getVariable($name){
+	public function getVariable($name) {
 		return getenv((string)$name);
 	}
 
@@ -75,7 +75,7 @@ class Cli extends AbstractResponse{
 		Parameters
 			string $name
 	*/
-	public function unsetVariable($name){
+	public function unsetVariable($name) {
 		putenv((string)$name);
 	}
 
@@ -90,10 +90,10 @@ class Cli extends AbstractResponse{
 		Return
 			string
 	*/
-	public function colorize($color,$background='',$style='0;'){
+	public function colorize($color, $background='', $style='0;') {
 		// Format
-		$color=$color?'3'.$color:'37m';
-		$background=$background?"\033[4".$background:$background;
+		$color = $color?'3'.$color:'37m';
+		$background = $background ? "\033[4".$background : $background;
 		// Generate formatting
 		return "$background\033[$style$color";
 	}
@@ -104,7 +104,7 @@ class Cli extends AbstractResponse{
 		Return
 			string
 	*/
-	public function reset(){
+	public function reset() {
 		return "\033[0m";
 	}
 

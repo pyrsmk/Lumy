@@ -5,7 +5,7 @@ namespace Lumy\Request;
 /*
 	Abstract request
 */
-abstract class AbstractRequest{
+abstract class AbstractRequest {
 
 	/*
 		Return the complete request chain
