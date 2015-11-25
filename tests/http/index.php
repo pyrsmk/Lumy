@@ -79,7 +79,7 @@ $lumy->get(array('/', '/foo/bar'), function() use($lumy) {
 	));
 });
 
-$lumy->publish('robots.txt');
+$lumy->publish('/robots.txt');
 $lumy->publish('/css');
 $lumy->unpublish('/css/styles2.css');
 

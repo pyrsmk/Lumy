@@ -290,20 +290,25 @@ if(PHP_SAPI == 'cli') {
 if(PHP_SAPI != 'cli') {
 	$minisuite->group('Application', function() use($minisuite, $c) {
 		
+		$request = Requests::get($c['http_chain']);
+		$minisuite->expects('publish()/unpublish() : get /')
+				  ->that(strpos($request->body, '{'))
+				  ->equals(0);
+		
 		$request = Requests::get($c['http_chain'].'/robots.txt');
-		$minisuite->expects('publish()/unpublish() : test 1')
-				  ->that($request->status_code)
-				  ->equals(200);
+		$minisuite->expects('publish()/unpublish() : get robots.txt')
+				  ->that($request->body)
+				  ->equals('test');
 		
 		$request = Requests::get($c['http_chain'].'/css/styles.css');
-		$minisuite->expects('publish()/unpublish() : test 2')
-				  ->that($request->status_code)
-				  ->equals(200);
+		$minisuite->expects('publish()/unpublish() : get css/styles.css')
+				  ->that($request->body)
+				  ->equals('test');
 		
 		$request = Requests::get($c['http_chain'].'/css/styles2.css');
-		$minisuite->expects('publish()/unpublish() : test 3')
-				  ->that(strpos($request->body, 'exception'))
-				  ->doesNotEqual(false);
+		$minisuite->expects('publish()/unpublish() : get css/styles2.css')
+				  ->that($request->body)
+				  ->doesNotEqual('test');
 		
 		$request = Requests::get($c['http_chain'].'/get');
 		$data = json_decode($request->body);

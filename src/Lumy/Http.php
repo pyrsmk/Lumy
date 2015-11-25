@@ -41,17 +41,21 @@ class Http extends Lumy{
 		$this->__lock = $manager->caller(new Path());
 		$this->__lock->deny('all');
 		// REST
-		$this->_middlewares[] = function($middlewares){
+		$this->middleware(function($middlewares){
 			if(isset($_POST['_METHOD'])) {
 				$_SERVER['REQUEST_METHOD'] = strtoupper($_POST['_METHOD']);
 				unset($_POST['_METHOD']);
 			}
 			$middlewares->next();
-		};
+		});
 		// Return allowed files
 		$this->middleware(function($middlewares) {
-			$path = str_replace('../', '', $this['request']->getResourceUri());
-			if($this->__lock->can(explode('/', $path)) && file_exists($path)) {
+			$path = $this->_formatPath($this['request']->getResourceUri());
+			if(
+				file_exists($path) &&
+				is_file($path) &&
+				$this->__lock->can($this->_formatPath($path))
+			) {
 				// Print file
 				header('Content-Type: '.mimetype($path));
 				echo file_get_contents($path);
@@ -71,7 +75,15 @@ class Http extends Lumy{
 			Lumy
 	*/
 	public function publish($path) {
-		$this->__lock->allow(explode('/', $path));
+		$path = $this->_formatPath($path);
+		if(is_dir($path)) {
+			foreach(lessdir($path) as $file) {
+				$this->publish($path.'/'.$file);
+			}
+		}
+		else {
+			$this->__lock->allow($path);
+		}
 		return $this;
 	}
 	
@@ -86,8 +98,31 @@ class Http extends Lumy{
 			Lumy
 	*/
 	public function unpublish($path) {
-		$this->__lock->deny(explode('/', $path));
+		$path = $this->_formatPath($path);
+		if(is_dir($path)) {
+			foreach(lessdir($path) as $file) {
+				$this->unpublish($path.'/'.$file);
+			}
+		}
+		else {
+			$this->__lock->deny($path);
+		}
 		return $this;
+	}
+	
+	/*
+		Format a path for publishing routines
+		
+		Parameters
+			string $path
+		
+		Return
+			string
+	*/
+	protected function _formatPath($path) {
+		$path = str_replace('../', '', $path);
+		$path = $path[0] == '/' ? substr($path, 1) : $path;
+		return $path;
 	}
 
 	/*
