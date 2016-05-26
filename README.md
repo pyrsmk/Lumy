@@ -1,4 +1,4 @@
-Lumy 2.9.2
+Lumy 2.9.3
 ==========
 
 Lumy is a [minimal](https://en.wikipedia.org/wiki/Minimalism_(computing)) micro CLI/HTTP framework that aims to be quick, effective and simple to extend as you want with any external component. It is heavily based on [Chernozem](https://github.com/pyrsmk/Chernozem) to provide an efficient way for dependencies injection.
@@ -12,7 +12,7 @@ Install
 
 Pick up the source or install it with [Composer](https://getcomposer.org/) :
 
-```json
+```
 composer require pyrsmk/lumy
 ```
 
