@@ -1,7 +1,7 @@
 Lumy 2.9.3
 ==========
 
-__Lumy 2 is now unmainted. For an alternative, you can look at [Slim](http://www.slimframework.com), which is shipped with [Lumy 3](https://github.com/pyrsmk/Lumy3)__
+__Lumy 2 repository is now unmainted in favor of [Lumy 3](https://github.com/pyrsmk/Lumy3). This new version is a big turn since the whole framework has been replaced by [Slim](http://www.slimframework.com). We just kept a little wrapper around Slim to be able to use [Chernozem](https://github.com/pyrsmk/Chernozem) too.__
 
 Lumy is a [minimal](https://en.wikipedia.org/wiki/Minimalism_(computing)) micro CLI/HTTP framework that aims to be quick, effective and simple to extend as you want with any external component. It is heavily based on [Chernozem](https://github.com/pyrsmk/Chernozem) to provide an efficient way for dependencies injection.
 
