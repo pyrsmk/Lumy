@@ -1,6 +1,8 @@
 Lumy 2.9.3
 ==========
 
+__Lumy 2 is now unmainted. For an alternative, you can look at [Slim](http://www.slimframework.com), which is shipped with [Lumy 3](https://github.com/pyrsmk/Lumy3)__
+
 Lumy is a [minimal](https://en.wikipedia.org/wiki/Minimalism_(computing)) micro CLI/HTTP framework that aims to be quick, effective and simple to extend as you want with any external component. It is heavily based on [Chernozem](https://github.com/pyrsmk/Chernozem) to provide an efficient way for dependencies injection.
 
 Lumy is born with the fact that micro-frameworks, like [Silex](http://silex.sensiolabs.org/) or [Slim](http://slimframework.com/), are still too big and handle behaviors that can be managed by many existing libraries. They're often too web-oriented too : PHP is also great with CLI environment.
